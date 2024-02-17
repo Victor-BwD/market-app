@@ -1,0 +1,14 @@
+enum HttpStatus {
+  CONTINUE = 100,
+  OK = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  INTERNAL_SERVER_ERROR = 500,
+  NOT_ACCEPTABLE = 406
+}
+
+export { HttpStatus };
