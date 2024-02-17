@@ -4,10 +4,10 @@ import { z } from "zod";
 const bodyObject = z.object({
   name: z.string().min(3),
   description: z.string(),
-  price: z.number().min(0).nonnegative("O preço não pode ser negativo."),
+  price: z.number().min(0).nonnegative("O preço não pode ser negativo.").transform((n) => parseFloat(n.toFixed(2))),
   quantity: z.number().min(0).nonnegative("A quantidade não pode ser negativa."),
-  shoppingListId: z.number().int().positive("O id da lista de compras não pode ser negativo."),
-  categoryId: z.number().int().positive("O id da categoria não pode ser negativo."),
+  shoppingListId: z.number().int().positive("O id da lista de compras não pode ser negativo.").optional(),
+  categoryId: z.number().int().positive("O id da categoria não pode ser negativo.").optional(),
 });
 
 export function CreateProductParser(req: Request) {
