@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import categoriasJson from "../../../config/constants/dummy/categoria.json";
+
 
 // Use npm run populate to populate the database with the dummy data
-class CategorySeeder {
+class shoppingListSeeder {
   private prisma: PrismaClient;
 
   constructor() {
@@ -11,20 +11,25 @@ class CategorySeeder {
 
   async populateDatabase() {
     try {
-      const count = await this.prisma.category.count();
+      const count = await this.prisma.shoppingList.count();
       if (count > 0) return;
 
-      await this.prisma.category.createMany({
-        data: categoriasJson
+      await this.prisma.shoppingList.createMany({
+        data: {
+          name: "Lista de compras 1",
+          description: "Lista de compras para o mês de julho",
+          spending_limit: 100.00,
+          total_price: 0.00,
+        }
       });
-
-      console.log("Categorias populadas com sucesso!");
-    } catch (error) {
+    }catch(error) {
       console.error("Erro ao popular o banco de dados:", error);
-    } finally {
+    }finally {
       await this.prisma.$disconnect();
     }
+
+
   }
 }
 
-export { CategorySeeder };
+export { shoppingListSeeder };

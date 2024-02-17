@@ -1,7 +1,7 @@
-import { CategoriaSeeder } from "./category.seed";
+import { CategorySeeder } from "./category.seed";
 
 async function populateCategoryDataBase() {
-  const categorySeeder = new CategoriaSeeder();
+  const categorySeeder = new CategorySeeder();
   await categorySeeder.populateDatabase();
 }
 
