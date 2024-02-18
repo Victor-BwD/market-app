@@ -6,7 +6,7 @@ const bodyObject = z.object({
   description: z.string(),
   price: z.number().min(0).nonnegative("O preço não pode ser negativo.").transform((n) => parseFloat(n.toFixed(2))),
   quantity: z.number().min(0).nonnegative("A quantidade não pode ser negativa."),
-  shoppingListId: z.number().int().positive("O id da lista de compras não pode ser negativo.").optional(),
+  shoppingListId: z.number().int().positive("O id da lista de compras não pode ser negativo."),
   categoryId: z.number().int().positive("O id da categoria não pode ser negativo.").optional(),
 });
 
