@@ -1,4 +1,4 @@
-import { CreateShoppingListPayload } from "../../../controller/shopping-list/parser";
+import { CreateShoppingListPayload } from "../../../controller/shopping-list/create/parser";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 
 export async function CreateShoppingListRepository(payload: CreateShoppingListPayload) {
