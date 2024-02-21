@@ -14,7 +14,7 @@ model Product {
   id             Int           @id @default(autoincrement())
   name           String
   description    String?
-  price          Decimal
+  price          Float
   quantity       Int
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -38,12 +38,14 @@ model Category {
 }
 
 model ShoppingList {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String?
+  spending_limit Float
+  total_price    Float     @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  products       Product[]
 
   @@index([name], map: "shopping_list_name_index")
 }
