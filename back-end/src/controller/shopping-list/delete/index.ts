@@ -8,10 +8,10 @@ import { deleteShoppingListRepository } from "../../../repository/shopping-list/
 export async function deleteShoppingListController(req: Request, res: Response) {
   try{
     const params = deleteShoppingListParser(req);
-    const shoppingListToDelete = await deleteShoppingListRepository(params);
-    console.log(params);
+    await deleteShoppingListRepository(params);
+    
 
-    return res.status(200).json(shoppingListToDelete);
+    return res.status(200).send("Lista deletada com sucesso!");
   }catch(error){
     handleError(error as Error, res);
   }

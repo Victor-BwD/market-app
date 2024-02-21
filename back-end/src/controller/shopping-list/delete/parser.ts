@@ -10,4 +10,4 @@ export function deleteShoppingListParser(req: Request) {
   
   return deleteShoppingListParamsSchema.parse({id});
 }
-export type DeleteShoppingListParams = z.infer<typeof deleteShoppingListParamsSchema >;
+export type DeleteShoppingListParams = z.infer<typeof deleteShoppingListParamsSchema>;
