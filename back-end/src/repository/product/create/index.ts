@@ -10,7 +10,7 @@ async function calculateTotalPrice(shoppingListId: number): Promise<number> {
 
   let totalPrice = 0;
   for (const product of products) {
-    totalPrice += product.price;
+    totalPrice += product.price * product.quantity;
   }
 
   return totalPrice;

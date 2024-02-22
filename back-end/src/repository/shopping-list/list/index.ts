@@ -12,6 +12,13 @@ export async function listShoppingListRepository({page, pageLimit}: ListShopping
       spending_limit: true,
       total_price: true,
       createdAt: true,
+      products: {
+        select: {
+          name: true,
+          price: true,
+          quantity: true
+        }
+      }
     },
     orderBy: {
       createdAt: "desc"
