@@ -1,4 +1,4 @@
-import { CreateProductPayload } from "../../../controller/product/parser";
+import { CreateProductPayload } from "../../../controller/product/create/parser";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 
 async function calculateTotalPrice(shoppingListId: number): Promise<number> {
