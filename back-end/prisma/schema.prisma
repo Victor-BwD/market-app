@@ -43,6 +43,7 @@ model ShoppingList {
   description    String?
   spending_limit Float
   total_price    Float     @default(0)
+  favorite       Boolean   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   products       Product[]

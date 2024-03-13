@@ -7,10 +7,12 @@ export async function listShoppingListRepository({page, pageLimit}: ListShopping
   const offset = (parseInt(page) - 1) * parseInt(pageLimit);
   const response = await prismaClient.shoppingList.findMany({
     select: {
+      id: true,
       name: true,
       description: true,
       spending_limit: true,
       total_price: true,
+      favorite: true,
       createdAt: true,
       products: {
         select: {
