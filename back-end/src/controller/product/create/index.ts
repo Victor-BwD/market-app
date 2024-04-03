@@ -1,4 +1,5 @@
 import handleError from "../../../helpers/handle-errors/handle.error";
+import { ResponseDTO } from "../../../helpers/utils/responseDTO";
 import { HttpStatus } from "../../../infra/http/http.status";
 import { CreateProductRepository } from "../../../repository/product/create";
 import { CreateProductParser } from "./parser";
@@ -9,7 +10,9 @@ export async function CreateProductController(req: Request, res: Response) {
     const productDTO = CreateProductParser(req);
     const product = await CreateProductRepository(productDTO);
 
-    return res.status(HttpStatus.CREATED).json(product);
+    const responseDTO = new ResponseDTO(HttpStatus.CREATED, "Product created successfully", product);
+
+    return res.status(HttpStatus.CREATED).json(responseDTO);
   }catch(error){
     handleError(error as Error, res);
   }
