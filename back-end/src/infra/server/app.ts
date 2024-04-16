@@ -4,9 +4,20 @@ import express from "express";
 import { productRouter } from "../routes/products";
 import { shoppingListRouter } from "../routes/shopping-list";
 
+const corsOptions = {
+  origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:5173"],
+};
+
 const app = express();
-app.use(cors());
+
+app.use((req, res, next) => {
+  res.setHeader("Accept", "application/json");
+  next();
+});
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
 app.use(productRouter);
 app.use(shoppingListRouter);
 

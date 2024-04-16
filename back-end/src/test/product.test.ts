@@ -1,38 +1,40 @@
-describe("Deve criar um produto", () => {
-  test("Deve criar um produto com sucesso", () => {
-    const product = {
-      name: "Produto 1",
-      price: 10,
-    };
+import axios from "axios";
 
-    expect(product).toHaveProperty("name");
-    expect(product).toHaveProperty("price");
-    expect(product.name).toBe("Produto 1");
-  });
 
-  test("O produto não deve ter preço menor que 0", () => {
+describe("Teste de criação e deleção de produto", () => {
+  let list: any;
+
+  test("Deve criar uma lista com sucesso", async () => {
     try{
-      const product = {
-        name: "Produto 1",
-        price: -10,
+      const newList = {
+        name: "lista 1",
+        description: "",
+        spending_limit: 1000,
+        total_price: 0
       };
 
-      expect(product.price).toBeGreaterThanOrEqual(0);
+      console.log("Rodou");
+
+      const response = await axios.post("http://localhost:3333/list", newList);
+      list = response.data;
+
+      expect(response.status).toBe(201);
+      expect(list).toHaveProperty("id");
+      expect(list.name).toBe(newList.name);
+      expect(list.spending_limit).toBe(newList.spending_limit);
     }catch(e){
       expect(e).toBeInstanceOf(Error);
     }
+    
+    
   });
+  
 
-  test("O produto não deve ter nome vazio", () => {
+  afterAll(async () => {
     try{
-      const product = {
-        name: "",
-        price: 10,
-      };
 
-      expect(product.name).not.toBeNull();
-      expect(product.name).not.toBeUndefined();
-      expect(product.name).not.toBe("");
+      const response = await axios.delete(`http://localhost:3333/list/${list.id}`);
+      expect(response.status).toBe(200);
     }catch(e){
       expect(e).toBeInstanceOf(Error);
     }
