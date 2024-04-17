@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { Request } from "express";
+import { getByName } from "../../../repository/shopping-list/list";
+import { isEmpty } from "radash";
 
 
 const bodyObject = z.object({
@@ -9,7 +11,15 @@ const bodyObject = z.object({
   total_price: z.number().min(0).nonnegative("O preço total não pode ser negativo.").transform((n) => parseFloat(n.toFixed(2))),
 });
 
-export function CreateShoppingListParser(req: Request) {
-  return bodyObject.parse(req.body);
+export async function CreateShoppingListParser(req: Request) {
+  const parsedBody = bodyObject.parse(req.body);
+
+  const existingList = await getByName(parsedBody.name);
+
+  if(!isEmpty(existingList)){
+    throw new Error("Já existe uma lista com esse nome.");
+  }
+
+  return parsedBody;
 }
 export type CreateShoppingListPayload = z.infer<typeof bodyObject>;

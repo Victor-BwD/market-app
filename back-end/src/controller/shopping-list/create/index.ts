@@ -8,7 +8,7 @@ import { ResponseDTO } from "../../../helpers/utils/responseDTO";
 
 export async function CreateShoppingListController(req: Request, res: Response) {
   try{
-    const shoppingListDTO = CreateShoppingListParser(req);
+    const shoppingListDTO =  await CreateShoppingListParser(req);
     const shoppingList = await CreateShoppingListRepository(shoppingListDTO);
 
     const responseDTO = new ResponseDTO(HttpStatus.CREATED, "List created successfully", shoppingList);
