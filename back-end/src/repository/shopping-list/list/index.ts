@@ -31,3 +31,19 @@ export async function listShoppingListRepository({page, pageLimit}: ListShopping
 
   return response;
 }
+
+export async function getByName(name: string) {
+  const response = await prismaClient.shoppingList.findFirst({
+    where: {
+      name: name
+    }
+  });
+
+  return response;
+}
+
+export async function getTotal() {
+  const response = await prismaClient.shoppingList.count();
+
+  return response;
+}

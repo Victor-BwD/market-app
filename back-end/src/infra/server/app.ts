@@ -12,6 +12,7 @@ const app = express();
 
 app.use((req, res, next) => {
   res.setHeader("Accept", "application/json");
+  res.set("Access-Control-Expose-Headers", "X-Total-Count");
   next();
 });
 

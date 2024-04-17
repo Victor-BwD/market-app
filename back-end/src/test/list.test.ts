@@ -40,3 +40,7 @@ describe("Teste de criação e deleção de produto", () => {
     }
   });
 });
+
+describe("Não deve criar uma lista se o nome já existir", () => {
+  
+});

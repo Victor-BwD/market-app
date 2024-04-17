@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import axios from "axios";
+import { Table } from "./table-lists";
 
 export function FormCadastro() {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ export function FormCadastro() {
   };
 
   return (
-    <div className="flex flex-start items-center h-screen ml-12">
+    <div className="flex flex-start flex-row justify-center items-center h-screen mx-[100px] gap-5 ml-12">
       <form className="bg-white rounded-lg p-8" onSubmit={handleFormSubmit}>
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
@@ -88,6 +89,7 @@ export function FormCadastro() {
           Cadastrar
         </button>
       </form>
+      <Table />
     </div>
   );
 }
