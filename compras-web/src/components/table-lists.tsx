@@ -62,6 +62,15 @@ export function Table() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`http://localhost:3333/list/${id}`);
+      loadShoppingList();
+    } catch (error: any) {
+      console.error(error.response);
+    }
+  };
+
   return (
     <div className="p-4 bg-white w-[1000px] text-black rounded-md">
       <h1 className="text-3xl font-semibold mb-4 text-black">
@@ -88,17 +97,25 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {shoppingList.map((list: ShoppingListProps, index: number) => (
-            <tr key={index}>
-              <td className="px-6 py-4">{list.name}</td>
-              <td className="px-6 py-4">{list.createdAt}</td>
-              <td className="px-6 py-4">{list.spending_limit}</td>
-              <td className="px-6 py-4">{list.total_price}</td>
-              <td className="px-6 py-4">
-                <button>Excluir</button>
+          {shoppingList.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="text-center">
+                Não há itens na lista
               </td>
             </tr>
-          ))}
+          ) : (
+            shoppingList.map((list: ShoppingListProps, index: number) => (
+              <tr key={index}>
+                <td className="px-6 py-4">{list.name}</td>
+                <td className="px-6 py-4">{list.createdAt}</td>
+                <td className="px-6 py-4">{list.spending_limit}</td>
+                <td className="px-6 py-4">{list.total_price}</td>
+                <td className="px-6 py-4">
+                  <button onClick={() => handleDelete(list.id)}>Excluir</button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <div className="flex justify-between mt-4">

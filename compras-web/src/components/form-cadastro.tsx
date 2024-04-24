@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Table } from "./table-lists";
+import { toast } from "react-toastify";
 
 export function FormCadastro() {
   const [formData, setFormData] = useState({
@@ -33,6 +34,14 @@ export function FormCadastro() {
         }
       );
       console.log(response);
+      setFormData({
+        name: "",
+        description: "",
+        spending_limit: 0,
+        total_price: 0,
+      });
+
+      toast.success("Lista cadastrada com sucesso!");
     } catch (error: any) {
       console.error(error.response);
     }
