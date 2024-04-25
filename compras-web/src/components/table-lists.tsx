@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+
+import { api } from "../services/api";
+import { format } from "date-fns";
 
 interface ShoppingListProps {
   id: string;
@@ -17,6 +19,7 @@ export function Table() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(10);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const pageLimit = 4;
 
   useEffect(() => {
     loadShoppingList();
@@ -26,27 +29,23 @@ export function Table() {
     setInputValue(event.target.value);
   };
 
+  function formatDate(dataString: string): string {
+    const data = new Date(dataString);
+    return format(data, "dd-MM-yyyy");
+  }
+
   const loadShoppingList = async () => {
-    const response = await axios.get(
-      `http://localhost:3333/list?page=${currentPage}&pageLimit=10`
+    const response = await api.get(
+      `/list?page=${currentPage}&pageLimit=${pageLimit}`
     );
 
-    console.log(response.headers);
-
     const totalCountHeader = await response.headers["x-total-count"];
-
-    // Converta o total count em um número inteiro
     const totalCount = parseInt(totalCountHeader, 10);
-
-    // Atualize o estado com o total count
     setTotalCount(totalCount);
-    console.log(totalCount);
 
-    // Calcula o total de páginas
-    const totalPages = Math.ceil(totalCount / 10);
+    const totalPages = Math.ceil(totalCount / pageLimit);
     setTotalPages(totalPages);
 
-    // Atualize o estado com a lista de compras
     setShoppingList(response.data);
   };
   const nextPage = () => {
@@ -64,7 +63,7 @@ export function Table() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3333/list/${id}`);
+      await api.delete(`/list/${id}`);
       loadShoppingList();
     } catch (error: any) {
       console.error(error.response);
@@ -72,46 +71,46 @@ export function Table() {
   };
 
   return (
-    <div className="p-4 bg-white w-[1000px] text-black rounded-md">
+    <div className="p-4 bg-white w-[1000px] h-[390px] text-black rounded-md">
       <h1 className="text-3xl font-semibold mb-4 text-black">
         Lista de Compras
       </h1>
-      <table className="min-w-full text-left text-sm font-light">
-        <thead className="border-b dark:border-neutral-500">
-          <tr>
-            <th scope="col" className="px-6 py-4">
-              Lista
-            </th>
-            <th scope="col" className="px-6 py-4">
-              Criado em
-            </th>
-            <th scope="col" className="px-6 py-4">
-              Total para gastar
-            </th>
-            <th scope="col" className="px-6 py-4">
-              Total
-            </th>
-            <th scope="col" className="px-6 py-4">
-              Ações
-            </th>
+      <table className="w-full table-auto">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="px-4 py-2">Lista</th>
+            <th className="px-4 py-2">Criado em</th>
+            <th className="px-4 py-2">Total para gastar R$</th>
+            <th className="px-4 py-2">Total</th>
+            <th className="px-4 py-2">Ações</th>
           </tr>
         </thead>
         <tbody>
           {shoppingList.length === 0 ? (
             <tr>
-              <td colSpan={5} className="text-center">
+              <td colSpan={5} className="text-center py-4">
                 Não há itens na lista
               </td>
             </tr>
           ) : (
-            shoppingList.map((list: ShoppingListProps, index: number) => (
-              <tr key={index}>
-                <td className="px-6 py-4">{list.name}</td>
-                <td className="px-6 py-4">{list.createdAt}</td>
-                <td className="px-6 py-4">{list.spending_limit}</td>
-                <td className="px-6 py-4">{list.total_price}</td>
-                <td className="px-6 py-4">
-                  <button onClick={() => handleDelete(list.id)}>Excluir</button>
+            shoppingList.map((list, index) => (
+              <tr
+                key={index}
+                className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+              >
+                <td className="border px-4 py-2">{list.name}</td>
+                <td className="border px-4 py-2">
+                  {formatDate(list.createdAt)}
+                </td>
+                <td className="border px-4 py-2">R$ {list.spending_limit}</td>
+                <td className="border px-4 py-2">R$ {list.total_price}</td>
+                <td className="border px-4 py-2">
+                  <button
+                    onClick={() => handleDelete(list.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))

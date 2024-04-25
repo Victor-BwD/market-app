@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import axios from "axios";
 import { Table } from "./table-lists";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
 
 export function FormCadastro() {
   const [formData, setFormData] = useState({
@@ -24,16 +24,12 @@ export function FormCadastro() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:3333/list",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response);
+      await api.post("/list", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       setFormData({
         name: "",
         description: "",
