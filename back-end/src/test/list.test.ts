@@ -13,8 +13,6 @@ describe("Teste de criação e deleção de produto", () => {
         total_price: 0
       };
 
-      console.log("Rodou");
-
       const response = await axios.post("http://localhost:3333/list", newList);
       list = response.data;
 

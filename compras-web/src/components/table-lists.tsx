@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { api } from "../services/api";
 import { format } from "date-fns";
+import handleRequestError from "../services/handleRequestError";
+import { toast } from "react-toastify";
 
 interface ShoppingListProps {
   id: string;
@@ -63,10 +65,14 @@ export function Table() {
 
   const handleDelete = async (id: string) => {
     try {
-      await api.delete(`/list/${id}`);
-      loadShoppingList();
-    } catch (error: any) {
-      console.error(error.response);
+      await api.delete(`/list/${id}`).then(() => {
+        setShoppingList(shoppingList.filter((list) => list.id !== id));
+
+        toast.success("Lista excluída com sucesso!");
+        loadShoppingList();
+      });
+    } catch (error) {
+      handleRequestError(error as never);
     }
   };
 
@@ -104,12 +110,15 @@ export function Table() {
                 </td>
                 <td className="border px-4 py-2">R$ {list.spending_limit}</td>
                 <td className="border px-4 py-2">R$ {list.total_price}</td>
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 space-x-6 flex items-center justify-center">
                   <button
                     onClick={() => handleDelete(list.id)}
                     className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
                   >
                     Excluir
+                  </button>
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                    Inserir itens +
                   </button>
                 </td>
               </tr>

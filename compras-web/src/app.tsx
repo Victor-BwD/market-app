@@ -1,11 +1,23 @@
-import { FormCadastro } from "./components/form-cadastro";
-import { Header } from "./components/header";
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer } from "react-toastify";
+import { InitPage } from "./views/initPage";
 
 export function App() {
   return (
-    <div>
-      <Header />
-      <FormCadastro />
-    </div>
+    <>
+      <InitPage />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 }

@@ -14,8 +14,6 @@ export async function listShoppingListController(req: Request, res: Response) {
 
     const total = await getTotal();
 
-    console.log(total);
-
     res.set("X-Total-Count", total.toString());
 
     return res.status(HttpStatus.OK).json(shoppingList);

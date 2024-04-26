@@ -3,16 +3,24 @@ import React, { useState } from "react";
 import { Table } from "./table-lists";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
+import handleRequestError from "../services/handleRequestError";
+
+interface FormDataProps {
+  name: string;
+  description: string;
+  spending_limit: number;
+  total_price: number;
+}
 
 export function FormCadastro() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataProps>({
     name: "",
     description: "",
     spending_limit: 0,
     total_price: 0,
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
@@ -20,7 +28,7 @@ export function FormCadastro() {
     });
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async (event: any) => {
     event.preventDefault();
 
     try {
@@ -37,9 +45,9 @@ export function FormCadastro() {
         total_price: 0,
       });
 
-      toast.success("Lista cadastrada com sucesso!");
+      window.location.reload();
     } catch (error: any) {
-      console.error(error.response);
+      handleRequestError(error);
     }
   };
 
