@@ -118,7 +118,10 @@ export function Table() {
                     Excluir
                   </button>
                   <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
-                    Inserir itens +
+                    Inserir produtos
+                  </button>
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                    Visualizar
                   </button>
                 </td>
               </tr>
