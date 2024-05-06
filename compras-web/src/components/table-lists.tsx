@@ -4,6 +4,7 @@ import { api } from "../services/api";
 import { format } from "date-fns";
 import handleRequestError from "../services/handleRequestError";
 import { toast } from "react-toastify";
+import { ModalCadastroProduto } from "./modal-cadastro-item";
 
 interface ShoppingListProps {
   id: string;
@@ -22,6 +23,7 @@ export function Table() {
   const [totalPages, setTotalPages] = useState<number>(10);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const pageLimit = 4;
 
   useEffect(() => {
@@ -77,6 +79,17 @@ export function Table() {
     }
   };
 
+  const handleOpenModal = (id: string) => {
+    setSelectedListId(id);
+    console.log(selectedListId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedListId(null);
+  };
+
   return (
     <div className="p-4 bg-white w-[1000px] h-[390px] text-black rounded-md">
       <h1 className="text-3xl font-semibold mb-4 text-black">
@@ -118,7 +131,10 @@ export function Table() {
                   >
                     Excluir
                   </button>
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
+                    onClick={() => handleOpenModal(list.id)}
+                  >
                     Inserir produtos
                   </button>
                   <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
@@ -146,6 +162,14 @@ export function Table() {
           Próxima Página
         </button>
       </div>
+      {isModalOpen && (
+        <ModalCadastroProduto
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          shoppingListId={selectedListId}
+          handleCloseModal={handleCloseModal}
+        />
+      )}
     </div>
   );
 }
