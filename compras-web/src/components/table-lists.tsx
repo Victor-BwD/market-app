@@ -21,6 +21,7 @@ export function Table() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(10);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const pageLimit = 4;
 
   useEffect(() => {
