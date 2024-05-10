@@ -166,7 +166,7 @@ export function Table() {
         <ModalCadastroProduto
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          shoppingListId={selectedListId}
+          shoppingListId={selectedListId as string} // Update the type of selectedListId to string
           handleCloseModal={handleCloseModal}
         />
       )}

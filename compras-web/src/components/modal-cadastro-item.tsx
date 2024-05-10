@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import handleRequestError from "../services/handleRequestError";
 
 interface CategoryInterface {
   id: number;
@@ -50,10 +51,42 @@ export function ModalCadastroProduto({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
+    const parsedValue =
+      name === "price" || name === "quantity" || name === "categoryId"
+        ? parseFloat(value)
+        : value;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: parsedValue,
     }));
+  };
+
+  const handleFormSubmit = async (event: any) => {
+    event.preventDefault();
+
+    try {
+      await api.post("/product", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      setFormData({
+        name: "",
+        description: "",
+        price: 0,
+        quantity: 0,
+        shoppingListId: shoppingListId,
+        categoryId: 1,
+      });
+
+      window.location.reload();
+    } catch (error: any) {
+      console.log(formData.categoryId);
+      handleRequestError(error);
+    }
   };
 
   if (!isOpen) return null;
@@ -68,7 +101,7 @@ export function ModalCadastroProduto({
           Fechar
         </button>
         <h2 className="text-2xl font-bold mb-4">Cadastrar Produto</h2>
-        <form>
+        <form onSubmit={handleFormSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Nome:
@@ -78,6 +111,7 @@ export function ModalCadastroProduto({
               type="text"
               name="name"
               value={formData.name}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -89,26 +123,31 @@ export function ModalCadastroProduto({
               type="text"
               name="description"
               value={formData.description}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Preço:
             </label>
-            <textarea
+            <input
               className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              type="number"
               name="price"
               value={formData.price}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Quantidade:
             </label>
-            <textarea
+            <input
               className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               name="quantity"
               value={formData.quantity}
+              type="number"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
