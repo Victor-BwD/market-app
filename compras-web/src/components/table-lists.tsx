@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import handleRequestError from "../services/handleRequestError";
 import { toast } from "react-toastify";
 import { ModalCadastroProduto } from "./modal-cadastro-item";
+import { ProductsModal } from "./list-products-modal";
 
 interface ShoppingListProps {
   id: string;
@@ -24,6 +25,7 @@ export function Table() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpenProduct, setIsModalOpenProduct] = useState<boolean>(false);
   const pageLimit = 4;
 
   useEffect(() => {
@@ -90,6 +92,14 @@ export function Table() {
     setSelectedListId(null);
   };
 
+  const handleOpenProductsModal = () => {
+    setIsModalOpenProduct(true);
+  };
+
+  const handleCloseProductsModal = () => {
+    setIsModalOpenProduct(false);
+  };
+
   return (
     <div className="p-4 bg-white w-[1000px] h-[390px] text-black rounded-md">
       <h1 className="text-3xl font-semibold mb-4 text-black">
@@ -137,7 +147,10 @@ export function Table() {
                   >
                     Inserir produtos
                   </button>
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
+                    onClick={() => handleOpenProductsModal()}
+                  >
                     Visualizar
                   </button>
                 </td>
@@ -166,8 +179,14 @@ export function Table() {
         <ModalCadastroProduto
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          shoppingListId={selectedListId as string} // Update the type of selectedListId to string
-          handleCloseModal={handleCloseModal}
+          shoppingListId={selectedListId as string}
+        />
+      )}
+
+      {isModalOpenProduct && (
+        <ProductsModal
+          isOpen={isModalOpenProduct}
+          onClose={handleCloseProductsModal}
         />
       )}
     </div>

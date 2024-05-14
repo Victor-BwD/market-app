@@ -20,12 +20,10 @@ export function ModalCadastroProduto({
   isOpen,
   onClose,
   shoppingListId,
-  handleCloseModal,
 }: {
   isOpen: boolean;
   onClose: () => void;
   shoppingListId: string;
-  handleCloseModal: () => void;
 }) {
   const [formData, setFormData] = useState<FormDataProps>({
     name: "",
