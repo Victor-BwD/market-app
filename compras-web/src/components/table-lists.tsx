@@ -104,7 +104,7 @@ export function Table() {
 
   return (
     <div className="p-4 bg-white w-[1000px] h-[390px] text-black rounded-md">
-      <h1 className="text-3xl font-semibold mb-4 text-black">
+      <h1 className="text-3xl font-semibold mb-4 text-black flex justify-center items-center">
         Lista de Compras
       </h1>
       <table className="w-full table-auto">
@@ -138,12 +138,6 @@ export function Table() {
                 <td className="border px-4 py-2">R$ {list.total_price}</td>
                 <td className="border px-4 py-2 space-x-6 flex items-center justify-center">
                   <button
-                    onClick={() => handleDelete(list.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                  >
-                    Excluir
-                  </button>
-                  <button
                     className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
                     onClick={() => handleOpenModal(list.id)}
                   >
@@ -155,6 +149,12 @@ export function Table() {
                   >
                     Visualizar
                   </button>
+                  <button
+                    onClick={() => handleDelete(list.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))
@@ -165,14 +165,18 @@ export function Table() {
         <button
           onClick={prevPage}
           disabled={currentPage === 1}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className={`bg-${
+            currentPage === 1 ? "gray" : "blue"
+          }-500 text-white px-4 py-2 rounded`}
         >
           Página Anterior
         </button>
         <button
           onClick={nextPage}
           disabled={currentPage === totalPages}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className={`bg-${
+            currentPage === totalPages ? "gray" : "blue"
+          }-500 text-white px-4 py-2 rounded`}
         >
           Próxima Página
         </button>
