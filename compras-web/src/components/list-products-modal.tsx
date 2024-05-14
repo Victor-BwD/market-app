@@ -2,14 +2,27 @@ import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import handleRequestError from "../services/handleRequestError";
 
+interface ProductsInterface {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  categoryId: number;
+}
+
 export function ProductsModal({
   isOpen,
   onClose,
+  shoppingListId,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  shoppingListId: string;
 }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductsInterface[]>([]);
 
   useEffect(() => {
     loadProducts();
@@ -17,7 +30,7 @@ export function ProductsModal({
 
   const loadProducts = async () => {
     try {
-      const response = await api.get("/list");
+      const response = await api.get(`/product/${shoppingListId}`);
       setProducts(response.data);
     } catch (error) {
       handleRequestError(error as never);
@@ -25,9 +38,10 @@ export function ProductsModal({
   };
 
   if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96 flex flex-col">
+      <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col">
         <button
           className="self-end text-gray-600 hover:text-gray-800"
           onClick={onClose}
@@ -38,31 +52,28 @@ export function ProductsModal({
         <table>
           <thead>
             <tr>
-              <th>Produto</th>
-              <th>Preço</th>
-              <th>Quantidade</th>
-              <th>Total</th>
+              <th className="px-4 py-2 text-left">Produto</th>
+              <th className="px-4 py-2 text-left">Descrição</th>
+              <th className="px-4 py-2 text-left">Preço</th>
+              <th className="px-4 py-2 text-left">Quantidade</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Arroz</td>
-              <td>R$ 5,00</td>
-              <td>2</td>
-              <td>R$ 10,00</td>
-            </tr>
-            <tr>
-              <td>Feijão</td>
-              <td>R$ 4,00</td>
-              <td>1</td>
-              <td>R$ 4,00</td>
-            </tr>
-            <tr>
-              <td>Carne</td>
-              <td>R$ 20,00</td>
-              <td>1</td>
-              <td>R$ 20,00</td>
-            </tr>
+          <tbody className="">
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="px-4 py-2">{product.name}</td>
+                <td className="px-4 py-2">{product.description}</td>
+                <td className="px-4 py-2">R$ {product.price}</td>
+                <td className="px-12 py-2">{product.quantity}</td>
+              </tr>
+            ))}
+            {products.length === 0 && (
+              <tr>
+                <td colSpan={4} className="text-center py-4">
+                  Não há itens na lista
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

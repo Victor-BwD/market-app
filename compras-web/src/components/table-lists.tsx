@@ -92,8 +92,10 @@ export function Table() {
     setSelectedListId(null);
   };
 
-  const handleOpenProductsModal = () => {
+  const handleOpenProductsModal = (id: string) => {
+    setSelectedListId(id);
     setIsModalOpenProduct(true);
+    console.log(selectedListId);
   };
 
   const handleCloseProductsModal = () => {
@@ -149,7 +151,7 @@ export function Table() {
                   </button>
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
-                    onClick={() => handleOpenProductsModal()}
+                    onClick={() => handleOpenProductsModal(list.id)}
                   >
                     Visualizar
                   </button>
@@ -187,6 +189,7 @@ export function Table() {
         <ProductsModal
           isOpen={isModalOpenProduct}
           onClose={handleCloseProductsModal}
+          shoppingListId={selectedListId as string}
         />
       )}
     </div>
