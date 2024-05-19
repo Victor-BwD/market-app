@@ -23,6 +23,8 @@ export function ProductsModal({
   shoppingListId: string;
 }) {
   const [products, setProducts] = useState<ProductsInterface[]>([]);
+  const [editingProduct, setEditingProduct] =
+    useState<ProductsInterface | null>(null);
 
   useEffect(() => {
     loadProducts();
@@ -41,6 +43,22 @@ export function ProductsModal({
     try {
       await api.delete(`/product/${productId}`);
       loadProducts();
+    } catch (error) {
+      handleRequestError(error as never);
+    }
+  };
+
+  const handleEdit = (product: ProductsInterface) => {
+    setEditingProduct(product);
+  };
+
+  const handleSave = async () => {
+    if (!editingProduct) return;
+
+    try {
+      await api.put(`/product/${editingProduct.id}`, editingProduct);
+      loadProducts();
+      setEditingProduct(null);
     } catch (error) {
       handleRequestError(error as never);
     }
@@ -77,7 +95,12 @@ export function ProductsModal({
                 <td className="px-12 py-2">{product.quantity}</td>
 
                 <td className="px-4 py-2 flex gap-2">
-                  <button className="text-blue-500">Editar</button>
+                  <button
+                    className="text-blue-500"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Editar
+                  </button>
                   <button
                     className="text-red-500"
                     onClick={() => handleDelete(product.id)}
@@ -96,6 +119,70 @@ export function ProductsModal({
             )}
           </tbody>
         </table>
+        {editingProduct && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col">
+              <button
+                className="self-end text-gray-600 hover:text-gray-800"
+                onClick={() => setEditingProduct(null)}
+              >
+                Fechar
+              </button>
+              <h2 className="text-2xl font-bold mb-4">Editar Produto</h2>
+              <input
+                type="text"
+                placeholder="Nome"
+                value={editingProduct.name}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, name: e.target.value })
+                }
+                className="mb-2 p-2 border border-gray-300 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Descrição"
+                value={editingProduct.description}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    description: e.target.value,
+                  })
+                }
+                className="mb-2 p-2 border border-gray-300 rounded"
+              />
+              <input
+                type="number"
+                placeholder="Preço"
+                value={editingProduct.price}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    price: Number(e.target.value),
+                  })
+                }
+                className="mb-2 p-2 border border-gray-300 rounded"
+              />
+              <input
+                type="number"
+                placeholder="Quantidade"
+                value={editingProduct.quantity}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    quantity: Number(e.target.value),
+                  })
+                }
+                className="mb-2 p-2 border border-gray-300 rounded"
+              />
+              <button
+                onClick={handleSave}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
