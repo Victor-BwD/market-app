@@ -153,25 +153,29 @@ export function ProductsModal({
               <input
                 type="number"
                 placeholder="Preço"
-                value={editingProduct.price}
-                onChange={(e) =>
+                value={editingProduct.price !== 0 ? editingProduct.price : ""}
+                onChange={(e) => {
+                  const value = e.target.value;
                   setEditingProduct({
                     ...editingProduct,
-                    price: Number(e.target.value),
-                  })
-                }
+                    price: value === "" ? 0 : Number(value),
+                  });
+                }}
                 className="mb-2 p-2 border border-gray-300 rounded"
               />
               <input
                 type="number"
                 placeholder="Quantidade"
-                value={editingProduct.quantity}
-                onChange={(e) =>
+                value={
+                  editingProduct.quantity !== 0 ? editingProduct.quantity : ""
+                }
+                onChange={(e) => {
+                  const value = e.target.value;
                   setEditingProduct({
                     ...editingProduct,
-                    quantity: Number(e.target.value),
-                  })
-                }
+                    quantity: value === "" ? 0 : Number(value),
+                  });
+                }}
                 className="mb-2 p-2 border border-gray-300 rounded"
               />
               <button
