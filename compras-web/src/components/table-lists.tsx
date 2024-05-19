@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 
 import { api } from "../services/api";
@@ -18,7 +19,6 @@ interface ShoppingListProps {
 }
 
 export function Table() {
-  const [inputValue, setInputValue] = useState("");
   const [shoppingList, setShoppingList] = useState<ShoppingListProps[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(10);
@@ -32,13 +32,9 @@ export function Table() {
     loadShoppingList();
   }, [currentPage]);
 
-  const handleChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
   function formatDate(dataString: string): string {
     const data = new Date(dataString);
-    return format(data, "dd-MM-yyyy");
+    return format(data, "dd/MM/yyyy");
   }
 
   const loadShoppingList = async () => {
@@ -55,6 +51,7 @@ export function Table() {
 
     setShoppingList(response.data);
   };
+
   const nextPage = () => {
     console.log(currentPage, totalPages);
     if (currentPage < totalPages) {
@@ -171,15 +168,17 @@ export function Table() {
         >
           Página Anterior
         </button>
-        <button
-          onClick={nextPage}
-          disabled={currentPage === totalPages}
-          className={`bg-${
-            currentPage === totalPages ? "gray" : "blue"
-          }-500 text-white px-4 py-2 rounded`}
-        >
-          Próxima Página
-        </button>
+        {shoppingList.length > 0 && (
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className={`bg-${
+              currentPage === totalPages ? "gray" : "blue"
+            }-500 text-white px-4 py-2 rounded`}
+          >
+            Próxima Página
+          </button>
+        )}
       </div>
       {isModalOpen && (
         <ModalCadastroProduto
