@@ -37,6 +37,15 @@ export function ProductsModal({
     }
   };
 
+  const handleDelete = async (productId: number) => {
+    try {
+      await api.delete(`/product/${productId}`);
+      loadProducts();
+    } catch (error) {
+      handleRequestError(error as never);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -56,6 +65,7 @@ export function ProductsModal({
               <th className="px-4 py-2 text-left">Descrição</th>
               <th className="px-4 py-2 text-left">Preço</th>
               <th className="px-4 py-2 text-left">Quantidade</th>
+              <th className="px-4 py-2 text-left">Ações</th>
             </tr>
           </thead>
           <tbody className="">
@@ -65,6 +75,16 @@ export function ProductsModal({
                 <td className="px-4 py-2">{product.description}</td>
                 <td className="px-4 py-2">R$ {product.price}</td>
                 <td className="px-12 py-2">{product.quantity}</td>
+
+                <td className="px-4 py-2 flex gap-2">
+                  <button className="text-blue-500">Editar</button>
+                  <button
+                    className="text-red-500"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             ))}
             {products.length === 0 && (
