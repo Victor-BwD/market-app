@@ -80,7 +80,6 @@ export function Table() {
 
   const handleOpenModal = (id: string) => {
     setSelectedListId(id);
-    console.log(selectedListId);
     setIsModalOpen(true);
   };
 
@@ -92,7 +91,6 @@ export function Table() {
   const handleOpenProductsModal = (id: string) => {
     setSelectedListId(id);
     setIsModalOpenProduct(true);
-    console.log(selectedListId);
   };
 
   const handleCloseProductsModal = () => {
@@ -132,7 +130,9 @@ export function Table() {
                   {formatDate(list.createdAt)}
                 </td>
                 <td className="border px-4 py-2">R$ {list.spending_limit}</td>
-                <td className="border px-4 py-2">R$ {list.total_price}</td>
+                <td className="border px-4 py-2">
+                  R$ {list.total_price.toFixed(2)}
+                </td>
                 <td className="border px-4 py-2 space-x-6 flex items-center justify-center">
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
