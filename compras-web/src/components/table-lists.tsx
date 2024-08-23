@@ -130,7 +130,13 @@ export function Table() {
                   {formatDate(list.createdAt)}
                 </td>
                 <td className="border px-4 py-2">R$ {list.spending_limit}</td>
-                <td className="border px-4 py-2">
+                <td
+                  className={
+                    list.total_price > list.spending_limit
+                      ? "border px-4 py-2 bg-red-400"
+                      : "border px-4 py-2 bg-green-400"
+                  }
+                >
                   R$ {list.total_price.toFixed(2)}
                 </td>
                 <td className="border px-4 py-2 space-x-6 flex items-center justify-center">
